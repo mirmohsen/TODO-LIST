@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 export class UserRo {
+  id: string;
   username: string;
   email: string;
 }
@@ -8,6 +9,7 @@ export class UserRo {
 export class UserEntity {
   public async response(user) {
     const returnData: UserRo = {
+      id: user.id,
       username: user.username,
       email: user.email,
     };

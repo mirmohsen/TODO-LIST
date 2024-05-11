@@ -12,12 +12,12 @@ export class UserService {
     private readonly cryptoService: CryptoService,
   ) {}
 
-  private async findEamilDup(email: string): Promise<boolean> {
+  private async findDuplicateEmail(email: string): Promise<boolean> {
     return !!this.UserModel.findOne({ email });
   }
 
   public async create(userDto: UserDto): Promise<User> {
-    if (await this.findEamilDup(userDto.email))
+    if (await this.findDuplicateEmail(userDto.email))
       throw new ForbiddenException('email not uniqe');
     return this.UserModel.create({
       ...userDto,

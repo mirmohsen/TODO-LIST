@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UpdateUserRo, UserDto } from './dto/user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './user.schema';
@@ -18,7 +18,7 @@ export class UserService {
 
   public async create(userDto: UserDto): Promise<User> {
     if (await this.findDuplicateEmail(userDto.email))
-      throw new ForbiddenException('email not uniqe');
+      throw new BadRequestException('email not uniqe');
 
     return this.UserModel.create({
       ...userDto,
@@ -26,8 +26,15 @@ export class UserService {
     });
   }
 
-  public get(): Promise<UserDocument[]> {
-    return this.UserModel.find({});
+  public get(page, limit): Promise<UserDocument[]> {
+    return this.paginate(page, limit);
+  }
+
+  public paginate(page: number, limit: number): Promise<UserDocument[]> {
+    return this.UserModel.find()
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .exec();
   }
 
   public async update(body: UpdateUserRo): Promise<User> {

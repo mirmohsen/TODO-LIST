@@ -1,14 +1,14 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { UserDto } from './dto/user.dto';
+import { UpdateUserRo, UserDto } from './dto/user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './user.schema';
+import { User, UserDocument } from './user.schema';
 import { Model } from 'mongoose';
 import { CryptoService } from 'src/common/classes/utils.class';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel('User') private readonly UserModel: Model<User>,
+    @InjectModel(User.name) private readonly UserModel: Model<User>,
     private readonly cryptoService: CryptoService,
   ) {}
 
@@ -26,7 +26,19 @@ export class UserService {
     });
   }
 
-  public async get(): Promise<any> {
-    return this.UserModel.find({}).select('_id username email');
+  public get(): Promise<UserDocument[]> {
+    return this.UserModel.find({});
+  }
+
+  public async update(body: UpdateUserRo): Promise<User> {
+    const update = { ...body };
+
+    if (body?.password)
+      update['password'] = this.cryptoService.hashPassword(body.password);
+
+    const result = await this.UserModel.findByIdAndUpdate(body._id, update, {
+      new: true,
+    });
+    return result;
   }
 }

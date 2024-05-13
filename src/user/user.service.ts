@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UpdateUserRo, UserDto } from './dto/user.dto';
+import { UpdateUserRo, UserDto, DeleteUserRo } from './dto/user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './user.schema';
 import { Model } from 'mongoose';
@@ -47,5 +47,20 @@ export class UserService {
       new: true,
     });
     return result;
+  }
+
+  public async delete(body: DeleteUserRo): Promise<any> {
+    const { _id } = body;
+    try {
+      const deleteUser = await this.UserModel.findOneAndDelete({ _id });
+
+      if (deleteUser) {
+        return 'delete user successfully.';
+      } else {
+        return 'No matching id founc';
+      }
+    } catch (error) {
+      console.error(`Error deleting id:${error}`);
+    }
   }
 }

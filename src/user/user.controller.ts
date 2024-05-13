@@ -1,8 +1,7 @@
-import { Controller, Body, Post, Get, Put, Param } from '@nestjs/common';
+import { Controller, Body, Post, Get, Put, Param, Query } from '@nestjs/common';
 import { UpdateUserRo, UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import { UserRo, UserEntity } from './entity/user.entity';
-import { UserDocument } from './user.schema';
 
 @Controller('/user')
 export class UserController {
@@ -18,8 +17,11 @@ export class UserController {
   }
 
   @Get('/get')
-  async get(): Promise<UserRo[]> {
-    return this.userEntity.collection(await this.userService.get());
+  async get(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ): Promise<UserRo[]> {
+    return this.userEntity.collection(await this.userService.get(page, limit));
   }
 
   @Put('/update')

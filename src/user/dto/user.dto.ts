@@ -35,3 +35,8 @@ export class UpdateUserRo {
   @IsOptional()
   email: string;
 }
+
+export class DeleteUserRo {
+  @IsMongoId()
+  _id: string;
+}

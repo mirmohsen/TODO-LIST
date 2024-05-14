@@ -4,6 +4,8 @@ import { UserModule } from './user/user.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import 'dotenv/config';
 import { APP_GUARD } from '@nestjs/core';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,8 +17,9 @@ import { APP_GUARD } from '@nestjs/core';
       },
     ]),
     UserModule,
+    AuthModule,
   ],
-  controllers: [],
+  controllers: [AuthController],
   providers: [
     {
       provide: APP_GUARD,

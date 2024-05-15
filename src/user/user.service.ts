@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './user.schema';
 import { Model } from 'mongoose';
 import { CryptoService } from 'src/common/classes/utils.class';
+import { AuthDto } from 'src/auth/dto/auth.dto';
 
 @Injectable()
 export class UserService {
@@ -57,10 +58,16 @@ export class UserService {
       if (deleteUser) {
         return 'delete user successfully.';
       } else {
-        return 'No matching id founc';
+        return 'No matching id found';
       }
     } catch (error) {
       console.error(`Error deleting id:${error}`);
     }
+  }
+
+  public async findOneUser(body: AuthDto): Promise<any> {
+    const { email } = body;
+
+    return this.UserModel.findOne({ email });
   }
 }

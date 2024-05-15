@@ -12,6 +12,7 @@ import { UserEntity } from './entity/user.entity';
   ],
   controllers: [UserController],
   providers: [UserService, CryptoService, UserEntity],
+  exports: [UserService],
 })
 export class UserModule {
   constructor() {}

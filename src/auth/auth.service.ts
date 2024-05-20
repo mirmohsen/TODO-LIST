@@ -19,18 +19,10 @@ export class AuthService {
     const user = await this.userService.findOneUser(payload);
 
     if (user) {
-      // console.log(
-      //   'equal pass ---->',
-      //   this.cryptoService.hashPassword(payload.password) !==
-      //     this.cryptoService.hashPassword(user.password),
-      // );
-      if (
-        this.cryptoService.hashPassword(payload.password) !==
-        this.cryptoService.hashPassword(user.password)
-      ) {
-        const payload = {};
+      if (this.cryptoService.hashPassword(payload.password) === user.password) {
+        const payload = { email: user.email };
         return {
-          access_token: await this.jwtService.signAsync(payload),
+          access_token: this.jwtService.sign(payload),
         };
       } else {
         throw new UnauthorizedException();

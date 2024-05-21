@@ -5,6 +5,7 @@ import { User, UserSchema } from './user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CryptoService } from 'src/common/classes/utils.class';
 import { UserEntity } from './entity/user.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [

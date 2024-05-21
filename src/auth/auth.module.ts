@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
 import { CryptoService } from 'src/common/classes/utils.class';
+import 'dotenv/config';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({

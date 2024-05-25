@@ -6,12 +6,15 @@ import {
   Put,
   Query,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { DeleteUserRo, UpdateUserRo, UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import { UserRo, UserEntity } from './entity/user.entity';
+import { AuthGaurd } from 'src/auth/auth.gaurd';
 
 @Controller('/user')
+@UseGuards(AuthGaurd)
 export class UserController {
   constructor(
     private readonly userService: UserService,
